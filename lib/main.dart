@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
                   }).toList();
                   setState(() {});
                 },
-                cursorColor: Colors.black,
+                cursorColor: Colors.grey,
                 // keyboardType: TextInputType.,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
