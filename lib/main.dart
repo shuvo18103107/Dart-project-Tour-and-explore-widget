@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -10,76 +11,77 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<String> countries = [
-    'Germany',
-    'Bangladesh',
-    'Bulgaria',
-    'franch',
-    'netharland',
-    'Pakistan',
-    'India',
-    'Afganistan',
-    'England',
-    'Australia'
+  final List<Myfriends> friends = [
+    Myfriends(name: 'Shuvo', color: 0xff738f66),
+    Myfriends(name: 'Rahim', color: 0xff5e5e5e),
+    Myfriends(name: 'James', color: 0xffff9190),
+    Myfriends(name: 'Jack', color: 0xff738f67),
+    Myfriends(name: 'Robert', color: 0xff738f69),
+    Myfriends(name: 'Maxewell', color: 0xff738f80),
   ];
-
-  List<String> updatedList;
-  @override
-  void initState() {
-    updatedList = countries;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    print(Random().nextDouble());
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('List.where() method'),
-        ),
-        body: Column(
-          children: [
-            Container(
-              height: 50,
-              margin: EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(
-                  color: Colors.tealAccent,
-                  borderRadius: BorderRadius.circular(32)),
-              child: TextFormField(
-                onChanged: (value) {
-                  updatedList = countries.where((item) {
-                    return item.contains(value);
-                  }).toList();
+        debugShowCheckedModeBanner: false,
+        title: 'Color Changer App',
+        theme: ThemeData(
+            primarySwatch: Colors.amber,
+            primaryColor: Colors.blue,
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6:
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                )),
+        home: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Color game using forEach method',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Task:Click on the button to change the background color randomly',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
+                    itemCount: friends.length,
+                    itemBuilder: (context, int index) {
+                      return Container(
+                        color: Color(
+                          friends[index].color,
+                        ),
+                        child: ListTile(title: Text(friends[index].name)),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.color_lens),
+                onPressed: () {
+                  friends.forEach((item) => item.color =
+                      (Random().nextDouble() * 0xFFFFFFFF).toInt());
+
                   setState(() {});
-                },
-                cursorColor: Colors.grey,
-                // keyboardType: TextInputType.,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(fontSize: 17),
-                  hintText: 'Search your trips',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(18),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 300,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Card(
-                      elevation: 5,
-                      child: ListTile(leading: Text(updatedList[index])));
-                },
-                itemCount: updatedList.length,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+                })));
   }
+}
+
+class Myfriends {
+  String name;
+  int color;
+  Myfriends({this.name, this.color});
 }
